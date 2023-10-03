@@ -41,6 +41,9 @@ class UserRegistrationForm(UserCreationForm):
         'class': "form-control py-4", 'id': "inputConfirmPassword", 'placeholder': "Подтвердите пароль"
     }))
 
+    image = forms.ImageField(widget=forms.FileInput(attrs={
+        'class': "custom-file-input"
+    }), required=False)
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username',
@@ -48,7 +51,6 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserProfileForm(UserChangeForm):
-
     first_name = forms.CharField(widget=forms.TextInput(attrs={
         'class': "form-control py-4"
 
@@ -58,10 +60,10 @@ class UserProfileForm(UserChangeForm):
 
     }))
     username = forms.CharField(widget=forms.TextInput(attrs={
-        'class': "form-control py-4"
+        'class': "form-control py-4", 'readonly': True,
     }))
     email = forms.CharField(widget=forms.EmailInput(attrs={
-        'class': "form-control py-4"
+        'class': "form-control py-4", 'readonly': True
     }))
     password1 = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': "form-control py-4"
@@ -72,7 +74,7 @@ class UserProfileForm(UserChangeForm):
 
     image = forms.ImageField(widget=forms.FileInput(attrs={
         'class': "custom-file-input"
-    }))
+    }), required=False)
 
     class Meta:
         model = User
