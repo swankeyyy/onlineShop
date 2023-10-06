@@ -1,18 +1,38 @@
 from django.shortcuts import render, HttpResponseRedirect
 from .models import Product, ProductCategory, Basket
 from django.contrib.auth.decorators import login_required
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
 
 
 # Create your views here.
 
-def index(request):
-    return render(request, 'products/index.html')
+class IndexView(TemplateView):
+    template_name = 'products/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Store'
+        return context
 
 
-def products(request):
-    content = Product.objects.all()
-    context = {'items': content}
-    return render(request, 'products/products.html', context=context)
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'products/products.html'
+    context_object_name = 'items'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data()
+        context['title'] = 'Spisok'
+        return context
+
+
+class BasketCreateView(CreateView):
+    model = Basket
+
+    def post(self, request, *args, **kwargs):
+        pass
 
 
 @login_required
@@ -27,6 +47,7 @@ def basket_add(request, product_id):
         basket.quantity += 1
         basket.save()
     return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
 
 @login_required
 def basket_remove(request, id):
