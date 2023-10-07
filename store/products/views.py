@@ -28,11 +28,6 @@ class ProductsListView(ListView):
         return context
 
 
-class BasketCreateView(CreateView):
-    model = Basket
-
-    def post(self, request, *args, **kwargs):
-        pass
 
 
 @login_required
